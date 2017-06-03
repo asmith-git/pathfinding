@@ -30,8 +30,19 @@ namespace asmith { namespace pathfinding {
 			
 		}
 		
-		virtual bool is_connected(key_t, key_t, cost_t&) const throw() = 0;
 		virtual const connection_t* get_connections(key_t, size_t&) const throw() = 0;
+		
+		virtual bool is_connected(key_t aSrc, key_t aDst, cost_t& aCost) const throw() {
+			size_t s;
+			const connection_t* const connections = get_connections(aSrc, s);
+			for(size_t i = 0; i < s; ++i) {
+				if(connections[i].first == aDst) {
+					aCost = connections[i].second;
+					return true;
+				}
+			}
+			return false;
+		}
 	};
 }}
 
