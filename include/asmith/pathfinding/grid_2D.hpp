@@ -24,8 +24,8 @@ namespace asmith { namespace pathfinding {
 	private:
 		enum {
 			CONNECTION_COUNT = DIAGONALS ? 8 : 4
-		}
-		mutable connectiont_t mConnections[DIAGONALS];
+		};
+		mutable connection_t mConnections[CONNECTION_COUNT];
 	protected:
 		virtual bool is_walkable(K, K) const throw();
 		
@@ -97,9 +97,9 @@ namespace asmith { namespace pathfinding {
 			return mConnections;
 		}
 		
-		virtual bool is_connected(key_t aSrc, key_t aDst, cost_t& aCost) const throw() override {
-			return is_connected(aSrc.first, aSrc.second, aDst.first, aDst.second, aCost);
-		}
+		//virtual bool is_connected(key_t aSrc, key_t aDst, cost_t& aCost) const throw() override {
+		//	return is_connected(aSrc.first, aSrc.second, aDst.first, aDst.second, aCost);
+		//}
 	};
 }}
 
