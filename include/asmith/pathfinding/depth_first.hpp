@@ -14,55 +14,36 @@
 #ifndef ASMITH_PATHFINDING_DEPTH_FIRST_HPP
 #define ASMITH_PATHFINDING_DEPTH_FIRST_HPP
 
-#include "pathfinder.hpp"
+#include "basic_pathfinder.hpp"
 	
 namespace asmith { namespace pathfinding {
 	
 	template<class K, class C = float>
-	class depth_first : public pathfinder<K,C> {
+	class depth_first : public basic_pathfinder<K,C> {
 	public:
-		typedef K key_t;
-		typedef C cost_t;
-		typedef std::pair<K,C> connection_t;
 
 		// Inherited from pathfinder 
 
 		std::vector<key_t> find_path(const map<key_t, C>& aMap, const key_t aBegin, const key_t aEnd) const throw() override {
+			mStack.clear();
+			mNodes.clear();
 
-			struct node {
-				key_t key;
-				key_t parent;
-				bool discovered;
-			};
+			mNodes.emplace(aBegin, node({aBegin, aBegin, false}));
+			mStack.push_back(aBegin);
+			while(!mStack.empty()) {
+				const key_t tmp = mStack.back();
+				mStack.pop_back();
+				node& n = mNodes.find(tmp)->second;
+				if(tmp == aEnd) return reconstruct_path(aBegin, n);
 
-			std::vector<key_t> s;
-			std::map<key_t, node> nodes;
-
-			nodes.emplace(aBegin, node({aBegin, aBegin, false}));
-			s.push_back(aBegin);
-			while(! s.empty()) {
-				const key_t tmp = s.back();
-				s.pop_back();
-				node& n = nodes.find(tmp)->second;
-				if(tmp == aEnd) {
-					std::vector<key_t> path;
-					node* n2 = &n;
-					while(n2->key != aBegin) {
-						path.push_back(n2->key);
-						n2 = &nodes.find(n2->parent)->second;
-					}
-					path.push_back(aBegin);
-					std::reverse(path.begin(), path.end());
-					return path;
-				}
 				if(! n.discovered) {
 					n.discovered = true;
 					size_t count = 0;
 					const connection_t* const connections = aMap.get_connections(tmp, count);
 					for(size_t i = 0; i < count; ++i) {
 						key_t k = connections[i].first;
-						nodes.emplace(k, node({ k, tmp, false }));
-						s.push_back(k);
+						mNodes.emplace(k, node({ k, tmp, false }));
+						mStack.push_back(k);
 					}
 				}
 			}
