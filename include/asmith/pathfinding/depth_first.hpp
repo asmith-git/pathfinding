@@ -31,18 +31,17 @@ namespace asmith { namespace pathfinding {
 			mNodes.emplace(aBegin, node({aBegin, aBegin, false}));
 			mStack.push_back(aBegin);
 			while(!mStack.empty()) {
-				const key_t tmp = mStack.back();
+				node& n = mNodes.find(mStack.back())->second;
 				mStack.pop_back();
-				node& n = mNodes.find(tmp)->second;
-				if(tmp == aEnd) return reconstruct_path(aBegin, n);
+				if(n.key == aEnd) return reconstruct_path(aBegin, n);
 
 				if(! n.discovered) {
 					n.discovered = true;
 					size_t count = 0;
-					const connection_t* const connections = aMap.get_connections(tmp, count);
+					const connection_t* const connections = aMap.get_connections(n.key, count);
 					for(size_t i = 0; i < count; ++i) {
 						key_t k = connections[i].first;
-						mNodes.emplace(k, node({ k, tmp, false }));
+						mNodes.emplace(k, node({ k, n.key, false }));
 						mStack.push_back(k);
 					}
 				}
