@@ -17,16 +17,18 @@
 #include "pathfinder.hpp"
 	
 namespace asmith { namespace pathfinding {
+
+	template<class K>
+	struct default_node {
+		K key;
+		K parent;
+		bool discovered;
+	};
 	
-	template<class K, class C>
+	template<class K, class C, class N = default_node<K>>
 	class basic_pathfinder : public pathfinder<K,C> {
 	protected:
-		struct node {
-			key_t key;
-			key_t parent;
-			bool discovered;
-		};
-
+		typedef N node;
 		mutable std::vector<key_t> mStack;
 		mutable std::map<key_t, node> mNodes;
 
