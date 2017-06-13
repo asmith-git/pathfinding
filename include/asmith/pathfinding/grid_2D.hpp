@@ -27,7 +27,7 @@ namespace asmith { namespace pathfinding {
 		};
 		mutable connection_t mConnections[CONNECTION_COUNT];
 	protected:
-		virtual bool is_walkable(K, K) const throw();
+		virtual bool is_walkable(K, K) const throw() = 0;
 		
 		virtual cost_t get_cardinal_cost() const throw() {
 			return 1;
@@ -52,22 +52,22 @@ namespace asmith { namespace pathfinding {
 			// Left
 			connection.first.first = aSrc.first - 1;
 			connection.first.second = aSrc.second;
-			if(is_walkable(connection.first.second, connection.second)) mConnections[count++] = connection;
+			if(is_walkable(connection.first.first, connection.first.second)) mConnections[count++] = connection;
 			
 			// Right
 			connection.first.first = aSrc.first + 1;
 			connection.first.second = aSrc.second;
-			if(is_walkable(connection.first.second, connection.second)) mConnections[count++] = connection;
+			if(is_walkable(connection.first.first, connection.first.second)) mConnections[count++] = connection;
 			
 			// Down
 			connection.first.first = aSrc.first;
 			connection.first.second = aSrc.second - 1;
-			if(is_walkable(connection.first.second, connection.second)) mConnections[count++] = connection;
+			if(is_walkable(connection.first.first, connection.first.second)) mConnections[count++] = connection;
 			
 			// Up
 			connection.first.first = aSrc.first;
 			connection.first.second = aSrc.second + 1;
-			if(is_walkable(connection.first.second, connection.second)) mConnections[count++] = connection;
+			if(is_walkable(connection.first.first, connection.first.second)) mConnections[count++] = connection;
 			
 			if(DIAGONALS) {
 				connection.second = get_diagonal_cost();
@@ -75,22 +75,22 @@ namespace asmith { namespace pathfinding {
 				// Bottom left
 				connection.first.first = aSrc.first - 1;
 				connection.first.second = aSrc.second - 1;
-				if(is_walkable(connection.first.second, connection.second)) mConnections[count++] = connection;
+				if(is_walkable(connection.first.first, connection.first.second)) mConnections[count++] = connection;
 				
 				// Top left
 				connection.first.first = aSrc.first - 1;
 				connection.first.second = aSrc.second + 1;
-				if(is_walkable(connection.first.second, connection.second)) mConnections[count++] = connection;
+				if(is_walkable(connection.first.first, connection.first.second)) mConnections[count++] = connection;
 				
 				// Top left
 				connection.first.first = aSrc.first + 1;
 				connection.first.second = aSrc.second - 1;
-				if(is_walkable(connection.first.second, connection.second)) mConnections[count++] = connection;
+				if(is_walkable(connection.first.first, connection.first.second)) mConnections[count++] = connection;
 				
 				// Top right
 				connection.first.first = aSrc.first + 1;
 				connection.first.second = aSrc.second + 1;
-				if(is_walkable(connection.first.second, connection.second)) mConnections[count++] = connection;
+				if(is_walkable(connection.first.first, connection.first.second)) mConnections[count++] = connection;
 			}
 			
 			aCount = count;
