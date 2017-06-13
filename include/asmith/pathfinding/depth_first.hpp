@@ -14,19 +14,20 @@
 #ifndef ASMITH_PATHFINDING_DEPTH_FIRST_HPP
 #define ASMITH_PATHFINDING_DEPTH_FIRST_HPP
 
-#include <vector>
-#include "map.hpp"
+#include "pathfinder.hpp"
 	
 namespace asmith { namespace pathfinding {
 	
 	template<class K, class C = float>
-	class depth_first {
+	class depth_first : public pathfinder<K,C> {
 	public:
 		typedef K key_t;
 		typedef C cost_t;
 		typedef std::pair<K,C> connection_t;
 
-		std::vector<key_t> find_path(const map<key_t, C>& aMap, const key_t aBegin, const key_t aEnd) const throw() {
+		// Inherited from pathfinder 
+
+		std::vector<key_t> find_path(const map<key_t, C>& aMap, const key_t aBegin, const key_t aEnd) const throw() override {
 
 			struct node {
 				key_t key;
